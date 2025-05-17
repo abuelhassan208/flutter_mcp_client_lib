@@ -358,13 +358,11 @@ class _McpDemoPageState extends State<McpDemoPage> {
     });
 
     try {
-      // Get the current directory
-      final currentDir = Directory.current.path;
-
       // Start the server process
       _serverProcess = await Process.start(
         'dart',
-        ['run', '$currentDir/example/mcp_server_example.dart'],
+        ['run', 'example/mcp_server_example.dart'],
+        workingDirectory: '/Users/user/StudioProjects/mcp',
       );
 
       // Listen for server output
