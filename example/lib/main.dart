@@ -93,24 +93,69 @@ class _McpDemoPageState extends State<McpDemoPage> {
             ),
             const SizedBox(height: 16),
             if (_isConnected) ...[
-              const Text(
-                'Resources:',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _resources.length,
-                  itemBuilder: (context, index) {
-                    final resource = _resources[index];
-                    return ListTile(
-                      title: Text(resource.name),
-                      subtitle: Text(resource.description),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.visibility),
-                        onPressed: () => _readResource(resource),
+              DefaultTabController(
+                length: 3,
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      TabBar(
+                        labelColor: Theme.of(context).primaryColor,
+                        tabs: const [
+                          Tab(text: 'Resources'),
+                          Tab(text: 'Tools'),
+                          Tab(text: 'Prompts'),
+                        ],
                       ),
-                    );
-                  },
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            // Resources Tab
+                            ListView.builder(
+                              itemCount: _resources.length,
+                              itemBuilder: (context, index) {
+                                final resource = _resources[index];
+                                return ListTile(
+                                  title: Text(resource.name),
+                                  subtitle: Text(resource.description ??
+                                      'No description available'),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.visibility),
+                                    onPressed: () => _readResource(resource),
+                                  ),
+                                );
+                              },
+                            ),
+
+                            // Tools Tab
+                            ListView.builder(
+                              itemCount: _tools.length,
+                              itemBuilder: (context, index) {
+                                final tool = _tools[index];
+                                return ListTile(
+                                  title: Text(tool.name),
+                                  subtitle: Text(tool.description ??
+                                      'No description available'),
+                                );
+                              },
+                            ),
+
+                            // Prompts Tab
+                            ListView.builder(
+                              itemCount: _prompts.length,
+                              itemBuilder: (context, index) {
+                                final prompt = _prompts[index];
+                                return ListTile(
+                                  title: Text(prompt.name),
+                                  subtitle: Text(prompt.description ??
+                                      'No description available'),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
