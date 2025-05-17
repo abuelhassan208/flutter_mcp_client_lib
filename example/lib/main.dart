@@ -1,4 +1,7 @@
 // Example of using the Flutter MCP Client Library
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 import 'package:logging/logging.dart';
@@ -50,6 +53,7 @@ class _McpDemoPageState extends State<McpDemoPage> {
   List<ToolInfo> _tools = [];
   List<PromptInfo> _prompts = [];
   String _statusMessage = '';
+  Process? _serverProcess;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,15 @@ class _McpDemoPageState extends State<McpDemoPage> {
                 ElevatedButton(
                   onPressed: _isLoading || !_isConnected ? null : _disconnect,
                   child: const Text('Disconnect'),
+                ),
+                const SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _startServer,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Start Server'),
                 ),
               ],
             ),
@@ -209,6 +222,48 @@ class _McpDemoPageState extends State<McpDemoPage> {
         _statusMessage = 'Connection failed: $e';
       });
       _client = null;
+
+      // Show a dialog with instructions on how to start the server
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Connection Failed'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Could not connect to the MCP server. Make sure the server is running.',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                const Text('To start the server, run:'),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.grey[200],
+                  child: const Text(
+                    'dart run example/mcp_server_example.dart',
+                    style: TextStyle(fontFamily: 'monospace'),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'The server will start on localhost:8080/mcp by default.',
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     } finally {
       setState(() {
         _isLoading = false;
@@ -294,5 +349,107 @@ class _McpDemoPageState extends State<McpDemoPage> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _startServer() async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Starting server...';
+    });
+
+    try {
+      // Get the current directory
+      final currentDir = Directory.current.path;
+
+      // Start the server process
+      _serverProcess = await Process.start(
+        'dart',
+        ['run', '$currentDir/example/mcp_server_example.dart'],
+      );
+
+      // Listen for server output
+      _serverProcess!.stdout.transform(const Utf8Decoder()).listen((data) {
+        debugPrint('Server output: $data');
+        if (data.contains('Server listening')) {
+          setState(() {
+            _statusMessage = 'Server started on localhost:8080';
+          });
+        }
+      });
+
+      // Listen for server errors
+      _serverProcess!.stderr.transform(const Utf8Decoder()).listen((data) {
+        debugPrint('Server error: $data');
+        setState(() {
+          _statusMessage = 'Server error: $data';
+        });
+      });
+
+      // Wait a bit for the server to start
+      await Future.delayed(const Duration(seconds: 2));
+
+      setState(() {
+        _statusMessage = 'Server started. You can now connect.';
+      });
+
+      // Show a success dialog
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Server Started'),
+          content: const Text(
+            'The MCP server has been started on localhost:8080.\n\n'
+            'You can now click "Connect" to connect to it.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _connect(); // Auto-connect
+              },
+              child: const Text('Connect Now'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      setState(() {
+        _statusMessage = 'Failed to start server: $e';
+      });
+
+      // Show an error dialog
+      if (!mounted) return;
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Server Start Failed'),
+          content: Text('Failed to start the MCP server: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _serverUrlController.dispose();
+    _serverProcess?.kill();
+    super.dispose();
   }
 }
