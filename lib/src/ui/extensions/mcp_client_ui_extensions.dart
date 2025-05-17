@@ -2,7 +2,7 @@
 ///
 /// This file defines extension methods for the McpClient class to easily
 /// render responses and integrate with the UI.
-library mcp_client_ui_extensions;
+library;
 
 import 'package:flutter/material.dart';
 

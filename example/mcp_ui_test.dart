@@ -3,8 +3,9 @@
 /// This application demonstrates the MCP UI components without requiring
 /// an actual MCP server connection. It creates mock responses and renders
 /// them using the MCP Response Widgets.
+library;
 import 'package:flutter/material.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 void main() {
   runApp(const McpUiTestApp());

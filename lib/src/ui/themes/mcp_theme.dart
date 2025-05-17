@@ -2,7 +2,7 @@
 ///
 /// This file defines the theme structure for MCP UI components.
 /// It provides customizable properties for colors, typography, spacing, and animations.
-library mcp_theme;
+library;
 
 import 'package:flutter/material.dart';
 
@@ -108,7 +108,9 @@ class McpTheme {
       secondaryColor: theme.colorScheme.secondary,
       backgroundColor: theme.colorScheme.surface,
       textColor: theme.colorScheme.onSurface,
-      secondaryTextColor: theme.colorScheme.onSurface.withOpacity(0.6),
+      secondaryTextColor: theme.colorScheme.onSurface.withAlpha(
+        153,
+      ), // 0.6 opacity
       errorColor: theme.colorScheme.error,
       successColor: Colors.green,
       warningColor: Colors.orange,
@@ -139,7 +141,9 @@ class McpTheme {
       secondaryColor: theme.colorScheme.secondary,
       backgroundColor: theme.colorScheme.surface,
       textColor: theme.colorScheme.onSurface,
-      secondaryTextColor: theme.colorScheme.onSurface.withOpacity(0.6),
+      secondaryTextColor: theme.colorScheme.onSurface.withAlpha(
+        153,
+      ), // 0.6 opacity
       errorColor: theme.colorScheme.error,
       successColor: Colors.green[400]!,
       warningColor: Colors.orange[300]!,

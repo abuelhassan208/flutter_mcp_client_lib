@@ -2,9 +2,9 @@
 ///
 /// This file tests the ClientCapabilities implementation with the newly added fields
 /// (resources, tools, and prompts)
-library test_client_capabilities;
+library;
 
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 void main() {
   print('Testing ClientCapabilities implementation...');

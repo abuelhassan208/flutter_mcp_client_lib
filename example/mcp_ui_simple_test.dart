@@ -2,8 +2,9 @@
 ///
 /// This application demonstrates each MCP UI component individually
 /// with a simple interface for testing.
+library;
 import 'package:flutter/material.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 void main() {
   runApp(const McpUiSimpleTestApp());

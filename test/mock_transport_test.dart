@@ -4,7 +4,6 @@ import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 
 // Import the MessageRole enum
-import 'package:flutter_mcp_client_lib/src/models/mcp_prompts.dart';
 
 import 'mock_transport_test.mocks.dart';
 

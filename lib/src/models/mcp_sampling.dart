@@ -2,7 +2,7 @@
 ///
 /// This file contains the models for MCP sampling, which allows servers to
 /// request LLM interactions from clients.
-library mcp_sampling;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

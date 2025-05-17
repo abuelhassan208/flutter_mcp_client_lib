@@ -2,7 +2,7 @@
 ///
 /// This file provides concrete implementations of the abstract classes defined
 /// in the MCP protocol.
-library mcp_concrete;
+library;
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -26,15 +26,11 @@ class McpRequestImpl extends McpRequest {
 
   @override
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{
-      'jsonrpc': jsonrpc,
-      'method': method,
-      'id': id,
-    };
+    // Start with the generated JSON
+    final json = _$McpRequestImplToJson(this);
 
-    if (params != null) {
-      json['params'] = params;
-    }
+    // Add the jsonrpc field
+    json['jsonrpc'] = jsonrpc;
 
     return json;
   }
@@ -47,27 +43,16 @@ class McpResponseImpl extends McpResponse {
   const McpResponseImpl({required super.id, super.result, super.error});
 
   /// Create a response from a JSON map
-  factory McpResponseImpl.fromJson(Map<String, dynamic> json) {
-    final id = json['id'] as String;
-    final result = json['result'] as Map<String, dynamic>?;
-    final errorJson = json['error'] as Map<String, dynamic>?;
-
-    final error = errorJson != null ? McpError.fromJson(errorJson) : null;
-
-    return McpResponseImpl(id: id, result: result, error: error);
-  }
+  factory McpResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$McpResponseImplFromJson(json);
 
   @override
   Map<String, dynamic> toJson() {
-    final json = <String, dynamic>{'jsonrpc': jsonrpc, 'id': id};
+    // Start with the generated JSON
+    final json = _$McpResponseImplToJson(this);
 
-    if (result != null) {
-      json['result'] = result;
-    }
-
-    if (error != null) {
-      json['error'] = error!.toJson();
-    }
+    // Add the jsonrpc field
+    json['jsonrpc'] = jsonrpc;
 
     return json;
   }

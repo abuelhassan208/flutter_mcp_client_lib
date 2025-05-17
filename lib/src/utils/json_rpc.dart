@@ -1,7 +1,7 @@
 /// JSON-RPC utilities
 ///
 /// This file contains utilities for working with JSON-RPC messages.
-library json_rpc;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

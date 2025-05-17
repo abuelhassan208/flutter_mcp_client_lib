@@ -2,13 +2,13 @@
 ///
 /// This example shows how to use the MCP UI components to render
 /// MCP responses in a Flutter application.
-library mcp_ui_example;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 // Using the package import
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 void main() {
   // Set up logging

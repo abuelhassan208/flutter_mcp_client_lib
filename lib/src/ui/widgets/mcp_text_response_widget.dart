@@ -2,7 +2,7 @@
 ///
 /// This file defines a widget for displaying text-based MCP responses.
 /// It handles plain text formatting and provides options for styling.
-library mcp_text_response_widget;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,15 +111,10 @@ class McpTextResponseWidget extends McpResponseWidget {
 
   /// Build the text content
   Widget _buildTextContent(BuildContext context) {
-    final textWidget = enableSelection
-        ? SelectableText(
-            textContent,
-            style: theme.bodyTextStyle,
-          )
-        : Text(
-            textContent,
-            style: theme.bodyTextStyle,
-          );
+    final textWidget =
+        enableSelection
+            ? SelectableText(textContent, style: theme.bodyTextStyle)
+            : Text(textContent, style: theme.bodyTextStyle);
 
     return Container(
       width: double.infinity,
@@ -127,7 +122,9 @@ class McpTextResponseWidget extends McpResponseWidget {
       decoration: BoxDecoration(
         color: theme.backgroundColor,
         borderRadius: BorderRadius.circular(theme.borderRadius / 2),
-        border: Border.all(color: theme.borderColor.withOpacity(0.5)),
+        border: Border.all(
+          color: theme.borderColor.withAlpha(128),
+        ), // 0.5 opacity
       ),
       child: textWidget,
     );

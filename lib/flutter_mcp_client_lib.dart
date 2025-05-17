@@ -2,7 +2,7 @@
 ///
 /// A Flutter implementation of the Model Context Protocol (MCP) for integrating
 /// with AI tools like Windsurf, Cursor, and Claude.
-library flutter_mcp_client_lib;
+library;
 
 export 'src/client/client.dart';
 export 'src/models/models.dart';

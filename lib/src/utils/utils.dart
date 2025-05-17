@@ -1,6 +1,6 @@
 /// MCP utilities
 ///
 /// This file exports the MCP utility classes.
-library utils;
+library;
 
 export 'json_rpc.dart';

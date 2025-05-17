@@ -2,7 +2,7 @@
 ///
 /// This file defines a widget for displaying structured data MCP responses.
 /// It handles JSON, tables, and other structured data formats.
-library mcp_data_response_widget;
+library;
 
 import 'dart:convert';
 
@@ -60,9 +60,10 @@ class McpDataResponseWidget extends McpResponseWidget {
   }) {
     // Extract the data from the response result
     final responseData = response.result?[dataKey];
-    final data = responseData is Map<String, dynamic>
-        ? responseData
-        : <String, dynamic>{};
+    final data =
+        responseData is Map<String, dynamic>
+            ? responseData
+            : <String, dynamic>{};
 
     return McpDataResponseWidget(
       key: key,
@@ -142,9 +143,7 @@ class McpDataResponseWidget extends McpResponseWidget {
         ),
         child: SelectableText(
           jsonString,
-          style: theme.codeTextStyle.copyWith(
-            color: theme.codeTextColor,
-          ),
+          style: theme.codeTextStyle.copyWith(color: theme.codeTextColor),
         ),
       );
     }
@@ -158,7 +157,9 @@ class McpDataResponseWidget extends McpResponseWidget {
       decoration: BoxDecoration(
         color: theme.backgroundColor,
         borderRadius: BorderRadius.circular(theme.borderRadius / 2),
-        border: Border.all(color: theme.borderColor.withOpacity(0.5)),
+        border: Border.all(
+          color: theme.borderColor.withAlpha(128),
+        ), // 0.5 opacity
       ),
       child: _JsonTreeView(
         data: json,
@@ -202,9 +203,10 @@ class _JsonTreeViewState extends State<_JsonTreeView> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: widget.data.entries.map((entry) {
-        return _buildJsonNode(entry.key, entry.value);
-      }).toList(),
+      children:
+          widget.data.entries.map((entry) {
+            return _buildJsonNode(entry.key, entry.value);
+          }).toList(),
     );
   }
 
@@ -216,13 +218,14 @@ class _JsonTreeViewState extends State<_JsonTreeView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: isExpandable
-              ? () {
-                  setState(() {
-                    _expandedState[key] = !isExpanded;
-                  });
-                }
-              : null,
+          onTap:
+              isExpandable
+                  ? () {
+                    setState(() {
+                      _expandedState[key] = !isExpanded;
+                    });
+                  }
+                  : null,
           child: Row(
             children: [
               if (isExpandable)
@@ -253,9 +256,10 @@ class _JsonTreeViewState extends State<_JsonTreeView> {
         if (isExpandable && isExpanded)
           Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: value is Map
-                ? _buildMapContent(value)
-                : _buildListContent(value),
+            child:
+                value is Map
+                    ? _buildMapContent(value)
+                    : _buildListContent(value),
           ),
         const SizedBox(height: 4),
       ],
@@ -265,21 +269,23 @@ class _JsonTreeViewState extends State<_JsonTreeView> {
   Widget _buildMapContent(Map<dynamic, dynamic> map) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: map.entries.map((entry) {
-        final key = entry.key.toString();
-        return _buildJsonNode(key, entry.value);
-      }).toList(),
+      children:
+          map.entries.map((entry) {
+            final key = entry.key.toString();
+            return _buildJsonNode(key, entry.value);
+          }).toList(),
     );
   }
 
   Widget _buildListContent(List<dynamic> list) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: list.asMap().entries.map((entry) {
-        final index = entry.key;
-        final value = entry.value;
-        return _buildJsonNode('[$index]', value);
-      }).toList(),
+      children:
+          list.asMap().entries.map((entry) {
+            final index = entry.key;
+            final value = entry.value;
+            return _buildJsonNode('[$index]', value);
+          }).toList(),
     );
   }
 

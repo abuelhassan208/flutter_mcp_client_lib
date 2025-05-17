@@ -2,7 +2,7 @@
 ///
 /// This file defines a renderer for MCP responses that can automatically
 /// detect and render the appropriate widget for a given response.
-library mcp_response_renderer;
+library;
 
 import 'package:flutter/material.dart';
 
@@ -26,10 +26,7 @@ class McpResponseRenderer {
   final McpInteractionCallback? onInteraction;
 
   /// Create a new MCP response renderer
-  const McpResponseRenderer({
-    required this.theme,
-    this.onInteraction,
-  });
+  const McpResponseRenderer({required this.theme, this.onInteraction});
 
   /// Render an MCP response
   ///
@@ -76,7 +73,6 @@ class McpResponseRenderer {
           onInteraction: onInteraction,
         );
       case McpResponseType.unknown:
-      default:
         // If we can't detect the type, try to render as data
         return McpDataResponseWidget(
           response: response,
@@ -130,14 +126,9 @@ class McpResponseRenderer {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Loading Response',
-            style: theme.headerTextStyle,
-          ),
+          Text('Loading Response', style: theme.headerTextStyle),
           const SizedBox(height: 16),
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
+          const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

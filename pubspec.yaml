@@ -25,11 +25,11 @@ dependencies:
 
   # MCP dependencies
   http: ^1.1.0
-  web_socket_channel: ^2.4.0
+  web_socket_channel: ^3.0.3
   stream_channel: ^2.1.2
   json_annotation: ^4.8.1
   equatable: ^2.0.5
-  meta: ^1.9.1
+  meta: ^1.16.0
   uuid: ^4.0.0
   logging: ^1.2.0
 
@@ -45,7 +45,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
   # MCP dev dependencies
-  build_runner: ^2.4.14
+  build_runner: ^2.4.15
   json_serializable: ^6.7.1
   mockito: ^5.4.6
   test: ^1.24.1

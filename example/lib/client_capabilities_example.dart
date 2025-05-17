@@ -61,8 +61,8 @@ void main() {
   log.info(
       '- Prompts: list=${fromJson.prompts?.list}, get=${fromJson.prompts?.get}');
 
-  // Create a client with these capabilities
-  final client = McpClient(
+  // Create a client with these capabilities and use it
+  McpClient(
     name: 'Example Client',
     version: '1.0.0',
     capabilities: fullCapabilities,

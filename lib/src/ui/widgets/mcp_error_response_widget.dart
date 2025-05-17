@@ -2,12 +2,11 @@
 ///
 /// This file defines a widget for displaying error MCP responses.
 /// It handles error formatting and provides options for error details.
-library mcp_error_response_widget;
+library;
 
 import 'package:flutter/material.dart';
 
 import '../../models/models.dart';
-import '../themes/mcp_theme.dart';
 import 'mcp_response_widget.dart';
 
 /// Widget for displaying error MCP responses
@@ -35,9 +34,9 @@ class McpErrorResponseWidget extends McpResponseWidget {
     this.onRetry,
     super.onInteraction,
   }) : assert(
-          !showRetryButton || onRetry != null,
-          'onRetry must be provided if showRetryButton is true',
-        );
+         !showRetryButton || onRetry != null,
+         'onRetry must be provided if showRetryButton is true',
+       );
 
   @override
   Widget buildContent(BuildContext context) {
@@ -73,17 +72,11 @@ class McpErrorResponseWidget extends McpResponseWidget {
   Widget _buildErrorHeader(BuildContext context, McpError error) {
     return Row(
       children: [
-        Icon(
-          Icons.error_outline,
-          color: theme.errorColor,
-          size: 24,
-        ),
+        Icon(Icons.error_outline, color: theme.errorColor, size: 24),
         const SizedBox(width: 8),
         Text(
           'Error ${error.code}',
-          style: theme.headerTextStyle.copyWith(
-            color: theme.errorColor,
-          ),
+          style: theme.headerTextStyle.copyWith(color: theme.errorColor),
         ),
       ],
     );
@@ -95,15 +88,15 @@ class McpErrorResponseWidget extends McpResponseWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.errorColor.withOpacity(0.1),
+        color: theme.errorColor.withAlpha(26), // 0.1 opacity
         borderRadius: BorderRadius.circular(theme.borderRadius / 2),
-        border: Border.all(color: theme.errorColor.withOpacity(0.3)),
+        border: Border.all(
+          color: theme.errorColor.withAlpha(77),
+        ), // 0.3 opacity
       ),
       child: Text(
         error.message,
-        style: theme.bodyTextStyle.copyWith(
-          color: theme.textColor,
-        ),
+        style: theme.bodyTextStyle.copyWith(color: theme.textColor),
       ),
     );
   }
@@ -115,9 +108,7 @@ class McpErrorResponseWidget extends McpResponseWidget {
       children: [
         Text(
           'Error Details:',
-          style: theme.captionTextStyle.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: theme.captionTextStyle.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 4),
         Container(
@@ -129,9 +120,7 @@ class McpErrorResponseWidget extends McpResponseWidget {
           ),
           child: SelectableText(
             error.data.toString(),
-            style: theme.codeTextStyle.copyWith(
-              color: theme.codeTextColor,
-            ),
+            style: theme.codeTextStyle.copyWith(color: theme.codeTextColor),
           ),
         ),
       ],

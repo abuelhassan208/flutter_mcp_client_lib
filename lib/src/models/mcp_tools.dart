@@ -2,7 +2,7 @@
 ///
 /// This file contains the models for MCP tools, which are used to provide
 /// functionality to LLMs.
-library mcp_tools;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

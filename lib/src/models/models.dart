@@ -1,7 +1,7 @@
 /// MCP models
 ///
 /// This file exports all the MCP model classes.
-library models;
+library;
 
 export 'mcp_capabilities.dart';
 export 'mcp_concrete.dart';

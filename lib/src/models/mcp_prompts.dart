@@ -2,7 +2,7 @@
 ///
 /// This file contains the models for MCP prompts, which are used to provide
 /// templated messages for LLM interactions.
-library mcp_prompts;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

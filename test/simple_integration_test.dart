@@ -50,18 +50,11 @@ class McpResponseImpl implements McpResponse {
   @override
   bool get stringify => true;
 
-  McpResponseImpl({
-    required this.id,
-    this.result,
-    this.error,
-  });
+  McpResponseImpl({required this.id, this.result, this.error});
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = {
-      'jsonrpc': jsonrpc,
-      'id': id,
-    };
+    final Map<String, dynamic> json = {'jsonrpc': jsonrpc, 'id': id};
 
     if (isSuccess) {
       json['result'] = result;
@@ -79,7 +72,8 @@ class McpResponseImpl implements McpResponse {
 /// A simple mock server for testing
 class MockMcpServer {
   final StreamController<String> _incomingMessages = StreamController<String>();
-  final StreamController<String> _outgoingMessages = StreamController<String>.broadcast();
+  final StreamController<String> _outgoingMessages =
+      StreamController<String>.broadcast();
   WebSocketChannel? _clientChannel;
 
   Stream<String> get incomingMessages => _incomingMessages.stream;
@@ -144,7 +138,11 @@ class MockMcpServer {
           } else {
             _sendResponse(id!, {
               'contents': [
-                {'uri': uri, 'text': 'Test content for URI: $uri', 'type': 'text'},
+                {
+                  'uri': uri,
+                  'text': 'Test content for URI: $uri',
+                  'type': 'text',
+                },
               ],
             });
           }
@@ -209,7 +207,10 @@ class MockMcpServer {
               'messages': [
                 {
                   'role': 'system',
-                  'content': {'type': 'text', 'text': 'You are a helpful assistant.'},
+                  'content': {
+                    'type': 'text',
+                    'text': 'You are a helpful assistant.',
+                  },
                 },
                 {
                   'role': 'user',
@@ -226,11 +227,7 @@ class MockMcpServer {
   }
 
   void _sendResponse(String id, Map<String, dynamic> result) {
-    final response = {
-      'jsonrpc': '2.0',
-      'id': id,
-      'result': result,
-    };
+    final response = {'jsonrpc': '2.0', 'id': id, 'result': result};
     _sendMessage(response);
   }
 
@@ -238,10 +235,7 @@ class MockMcpServer {
     final response = {
       'jsonrpc': '2.0',
       'id': id,
-      'error': {
-        'code': code,
-        'message': message,
-      },
+      'error': {'code': code, 'message': message},
     };
     _sendMessage(response);
   }
@@ -261,8 +255,10 @@ class MockMcpServer {
 
 /// A simple WebSocketChannel for testing
 class MockWebSocketChannel implements WebSocketChannel {
-  final StreamController<dynamic> _controller = StreamController<dynamic>.broadcast();
-  final StreamController<dynamic> _sinkController = StreamController<dynamic>.broadcast();
+  final StreamController<dynamic> _controller =
+      StreamController<dynamic>.broadcast();
+  final StreamController<dynamic> _sinkController =
+      StreamController<dynamic>.broadcast();
   final MockMcpServer _server;
 
   MockWebSocketChannel(this._server) {
@@ -301,19 +297,28 @@ class MockWebSocketChannel implements WebSocketChannel {
   StreamChannel<S> cast<S>() => throw UnimplementedError();
 
   @override
-  StreamChannel<dynamic> changeSink(StreamSink<dynamic> Function(StreamSink<dynamic>) change) => throw UnimplementedError();
+  StreamChannel<dynamic> changeSink(
+    StreamSink<dynamic> Function(StreamSink<dynamic>) change,
+  ) => throw UnimplementedError();
 
   @override
-  StreamChannel<dynamic> changeStream(Stream<dynamic> Function(Stream<dynamic>) change) => throw UnimplementedError();
+  StreamChannel<dynamic> changeStream(
+    Stream<dynamic> Function(Stream<dynamic>) change,
+  ) => throw UnimplementedError();
 
   @override
-  StreamChannel<R> transform<R>(StreamChannelTransformer<R, dynamic> transformer) => throw UnimplementedError();
+  StreamChannel<R> transform<R>(
+    StreamChannelTransformer<R, dynamic> transformer,
+  ) => throw UnimplementedError();
 
   @override
-  StreamChannel<dynamic> transformSink(dynamic transformer) => throw UnimplementedError();
+  StreamChannel<dynamic> transformSink(dynamic transformer) =>
+      throw UnimplementedError();
 
   @override
-  StreamChannel<dynamic> transformStream(StreamTransformer<dynamic, dynamic> transformer) => throw UnimplementedError();
+  StreamChannel<dynamic> transformStream(
+    StreamTransformer<dynamic, dynamic> transformer,
+  ) => throw UnimplementedError();
 }
 
 class _MockWebSocketSink implements WebSocketSink {
@@ -355,7 +360,8 @@ class MockMcpTransport implements McpClientTransport {
   bool _isConnected = false;
   ServerCapabilities? _serverCapabilities;
 
-  MockMcpTransport(MockMcpServer server) : _channel = MockWebSocketChannel(server);
+  MockMcpTransport(MockMcpServer server)
+    : _channel = MockWebSocketChannel(server);
 
   @override
   bool get isConnected => _isConnected;
@@ -427,63 +433,72 @@ class MockMcpTransport implements McpClientTransport {
     final timeout = Timer(Duration(seconds: 10), () {
       if (!completer.isCompleted) {
         // If we're still waiting after 10 seconds, complete with an error
-        completer.completeError(McpError(
-          code: -32603,
-          message: 'Request timed out: ${request.method}',
-        ));
+        completer.completeError(
+          McpError(
+            code: -32603,
+            message: 'Request timed out: ${request.method}',
+          ),
+        );
       }
     });
 
     // Listen for the response from the server
     late StreamSubscription subscription;
-    subscription = _channel.stream.listen((message) {
-      if (message is String) {
-        final Map<String, dynamic> response = jsonDecode(message);
+    subscription = _channel.stream.listen(
+      (message) {
+        if (message is String) {
+          final Map<String, dynamic> response = jsonDecode(message);
 
-        if (response['id'] == request.id) {
-          if (response.containsKey('result')) {
-            // For initialize, set the server capabilities
-            if (request.method == 'initialize' && response['result'] != null) {
-              final result = response['result'] as Map<String, dynamic>;
-              if (result.containsKey('capabilities')) {
-                _serverCapabilities = ServerCapabilities.fromJson(
-                  result['capabilities'] as Map<String, dynamic>,
-                );
+          if (response['id'] == request.id) {
+            if (response.containsKey('result')) {
+              // For initialize, set the server capabilities
+              if (request.method == 'initialize' &&
+                  response['result'] != null) {
+                final result = response['result'] as Map<String, dynamic>;
+                if (result.containsKey('capabilities')) {
+                  _serverCapabilities = ServerCapabilities.fromJson(
+                    result['capabilities'] as Map<String, dynamic>,
+                  );
+                }
               }
+
+              completer.complete(
+                McpResponseImpl(id: response['id'], result: response['result']),
+              );
+            } else if (response.containsKey('error')) {
+              completer.complete(
+                McpResponseImpl(
+                  id: response['id'],
+                  error: McpError(
+                    code: response['error']['code'],
+                    message: response['error']['message'],
+                    data: response['error']['data'],
+                  ),
+                ),
+              );
             }
 
-            completer.complete(McpResponseImpl(
-              id: response['id'],
-              result: response['result'],
-            ));
-          } else if (response.containsKey('error')) {
-            completer.complete(McpResponseImpl(
-              id: response['id'],
-              error: McpError(
-                code: response['error']['code'],
-                message: response['error']['message'],
-                data: response['error']['data'],
-              ),
-            ));
+            subscription.cancel();
+            timeout.cancel();
           }
-
-          subscription.cancel();
-          timeout.cancel();
         }
-      }
-    }, onError: (error) {
-      completer.completeError(McpError(
-        code: -32603,
-        message: 'Transport error: $error',
-      ));
-      timeout.cancel();
-    }, onDone: () {
-      completer.completeError(McpError(
-        code: -32603,
-        message: 'Connection closed before response received',
-      ));
-      timeout.cancel();
-    });
+      },
+      onError: (error) {
+        completer.completeError(
+          McpError(code: -32603, message: 'Transport error: $error'),
+        );
+        timeout.cancel();
+      },
+      onDone: () {
+        completer.completeError(
+          McpError(
+            code: -32603,
+            message: 'Connection closed before response received',
+          ),
+        );
+        timeout.cancel();
+      },
+    );
 
     return completer.future;
   }
@@ -492,12 +507,12 @@ class MockMcpTransport implements McpClientTransport {
 void main() {
   group('Simple Integration Tests', () {
     late MockMcpServer server;
-    late MockMcpTransport transport;
     late McpClient client;
 
     setUp(() {
       server = MockMcpServer();
-      transport = MockMcpTransport(server);
+      // Create transport but don't use it since tests are skipped
+      final _ = MockMcpTransport(server);
       client = McpClient(
         name: 'Test Client',
         version: '1.0.0',
@@ -512,52 +527,84 @@ void main() {
       server.close();
     });
 
-    test('client can connect to server and negotiate capabilities', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can connect to server and negotiate capabilities',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can list resources', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can list resources',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can read resources', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can read resources',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can list tools', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can list tools',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can call tools', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can call tools',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can list prompts', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can list prompts',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client can get prompts', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client can get prompts',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
 
-    test('client handles errors correctly', () async {
-      // Skip this test for now
-      // The simple integration tests need further investigation
-      // The issue is related to the WebSocket communication in the test environment
-    }, skip: 'Simple integration tests need further investigation');
+    test(
+      'client handles errors correctly',
+      () async {
+        // Skip this test for now
+        // The simple integration tests need further investigation
+        // The issue is related to the WebSocket communication in the test environment
+      },
+      skip: 'Simple integration tests need further investigation',
+    );
   });
 }

@@ -2,7 +2,7 @@
 ///
 /// This example shows how to create a simple MCP server that provides resources,
 /// tools, and prompts.
-library mcp_server_example;
+library;
 
 import 'dart:async';
 import 'dart:convert';
@@ -13,7 +13,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 
 // Using the package import
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 /// A simple MCP server that uses WebSockets
 class SimpleWebSocketServer {

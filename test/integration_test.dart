@@ -8,10 +8,11 @@ import 'package:web_socket_channel/status.dart' as status;
 import 'package:stream_channel/stream_channel.dart';
 
 class TestServer {
-  final StreamController<String> _incomingMessages = StreamController<String>.broadcast();
-  final StreamController<String> _outgoingMessages = StreamController<String>.broadcast();
+  final StreamController<String> _incomingMessages =
+      StreamController<String>.broadcast();
+  final StreamController<String> _outgoingMessages =
+      StreamController<String>.broadcast();
   WebSocketChannel? _clientChannel;
-  int _requestId = 0;
   StreamSubscription? _clientSubscription;
   bool _isClosed = false;
 
@@ -59,12 +60,7 @@ class TestServer {
         _handleGetPrompt(id, params);
         break;
       default:
-        _sendErrorResponse(
-          id,
-          -32601,
-          'Method not found',
-          {'method': method},
-        );
+        _sendErrorResponse(id, -32601, 'Method not found', {'method': method});
     }
   }
 
@@ -124,10 +120,7 @@ class TestServer {
         'id': id,
         'result': {
           'contents': [
-            {
-              'uri': uri,
-              'text': 'Test content for ID: $testId',
-            },
+            {'uri': uri, 'text': 'Test content for ID: $testId'},
           ],
         },
       };
@@ -139,21 +132,13 @@ class TestServer {
         'id': id,
         'result': {
           'contents': [
-            {
-              'uri': uri,
-              'text': 'Hello, $name!',
-            },
+            {'uri': uri, 'text': 'Hello, $name!'},
           ],
         },
       };
       _sendResponse(response);
     } else {
-      _sendErrorResponse(
-        id,
-        -33000,
-        'Resource not found',
-        {'uri': uri},
-      );
+      _sendErrorResponse(id, -33000, 'Resource not found', {'uri': uri});
     }
   }
 
@@ -167,16 +152,8 @@ class TestServer {
             'name': 'add',
             'description': 'Add two numbers',
             'arguments': [
-              {
-                'name': 'a',
-                'description': 'First number',
-                'required': true,
-              },
-              {
-                'name': 'b',
-                'description': 'Second number',
-                'required': true,
-              },
+              {'name': 'a', 'description': 'First number', 'required': true},
+              {'name': 'b', 'description': 'Second number', 'required': true},
             ],
           },
           {
@@ -202,12 +179,9 @@ class TestServer {
     final arguments = params?['arguments'];
 
     if (name == null || arguments == null) {
-      _sendErrorResponse(
-        id,
-        -32602,
-        'Invalid params',
-        {'missing': name == null ? 'name' : 'arguments'},
-      );
+      _sendErrorResponse(id, -32602, 'Invalid params', {
+        'missing': name == null ? 'name' : 'arguments',
+      });
       return;
     }
 
@@ -216,12 +190,9 @@ class TestServer {
       final b = num.tryParse(arguments['b'].toString());
 
       if (a == null || b == null) {
-        _sendErrorResponse(
-          id,
-          -32602,
-          'Invalid params',
-          {'invalid': a == null ? 'a' : 'b'},
-        );
+        _sendErrorResponse(id, -32602, 'Invalid params', {
+          'invalid': a == null ? 'a' : 'b',
+        });
         return;
       }
 
@@ -230,10 +201,7 @@ class TestServer {
         'id': id,
         'result': {
           'content': [
-            {
-              'type': 'text',
-              'text': '${a + b}',
-            },
+            {'type': 'text', 'text': '${a + b}'},
           ],
         },
       };
@@ -242,12 +210,9 @@ class TestServer {
       final message = arguments['message']?.toString();
 
       if (message == null) {
-        _sendErrorResponse(
-          id,
-          -32602,
-          'Invalid params',
-          {'missing': 'message'},
-        );
+        _sendErrorResponse(id, -32602, 'Invalid params', {
+          'missing': 'message',
+        });
         return;
       }
 
@@ -256,21 +221,13 @@ class TestServer {
         'id': id,
         'result': {
           'content': [
-            {
-              'type': 'text',
-              'text': message,
-            },
+            {'type': 'text', 'text': message},
           ],
         },
       };
       _sendResponse(response);
     } else {
-      _sendErrorResponse(
-        id,
-        -33001,
-        'Tool not found',
-        {'name': name},
-      );
+      _sendErrorResponse(id, -33001, 'Tool not found', {'name': name});
     }
   }
 
@@ -303,12 +260,9 @@ class TestServer {
     final arguments = params?['arguments'];
 
     if (name == null || arguments == null) {
-      _sendErrorResponse(
-        id,
-        -32602,
-        'Invalid params',
-        {'missing': name == null ? 'name' : 'arguments'},
-      );
+      _sendErrorResponse(id, -32602, 'Invalid params', {
+        'missing': name == null ? 'name' : 'arguments',
+      });
       return;
     }
 
@@ -316,12 +270,7 @@ class TestServer {
       final personName = arguments['name']?.toString();
 
       if (personName == null) {
-        _sendErrorResponse(
-          id,
-          -32602,
-          'Invalid params',
-          {'missing': 'name'},
-        );
+        _sendErrorResponse(id, -32602, 'Invalid params', {'missing': 'name'});
         return;
       }
 
@@ -332,27 +281,18 @@ class TestServer {
           'messages': [
             {
               'role': 'system',
-              'content': {
-                'text': 'You are a helpful assistant.',
-              },
+              'content': {'text': 'You are a helpful assistant.'},
             },
             {
               'role': 'user',
-              'content': {
-                'text': 'Hello, $personName!',
-              },
+              'content': {'text': 'Hello, $personName!'},
             },
           ],
         },
       };
       _sendResponse(response);
     } else {
-      _sendErrorResponse(
-        id,
-        -33002,
-        'Prompt not found',
-        {'name': name},
-      );
+      _sendErrorResponse(id, -33002, 'Prompt not found', {'name': name});
     }
   }
 
@@ -421,8 +361,8 @@ class TestWebSocketChannel implements WebSocketChannel {
   bool _isClosed = false;
 
   TestWebSocketChannel(this._server)
-      : _controller = StreamController<dynamic>.broadcast(),
-        _sinkController = StreamController<dynamic>.broadcast() {
+    : _controller = StreamController<dynamic>.broadcast(),
+      _sinkController = StreamController<dynamic>.broadcast() {
     // Connect this channel to the server
     _server.connectClient(this);
 
@@ -473,19 +413,22 @@ class TestWebSocketChannel implements WebSocketChannel {
 
   @override
   StreamChannel<dynamic> changeSink(
-      StreamSink<dynamic> Function(StreamSink<dynamic>) change) {
+    StreamSink<dynamic> Function(StreamSink<dynamic>) change,
+  ) {
     throw UnsupportedError('Not implemented in test');
   }
 
   @override
   StreamChannel<dynamic> changeStream(
-      Stream<dynamic> Function(Stream<dynamic>) change) {
+    Stream<dynamic> Function(Stream<dynamic>) change,
+  ) {
     throw UnsupportedError('Not implemented in test');
   }
 
   @override
   StreamChannel<R> transform<R>(
-      StreamChannelTransformer<R, dynamic> transformer) {
+    StreamChannelTransformer<R, dynamic> transformer,
+  ) {
     throw UnsupportedError('Not implemented in test');
   }
 
@@ -496,7 +439,8 @@ class TestWebSocketChannel implements WebSocketChannel {
 
   @override
   StreamChannel<dynamic> transformStream(
-      StreamTransformer<dynamic, dynamic> transformer) {
+    StreamTransformer<dynamic, dynamic> transformer,
+  ) {
     throw UnsupportedError('Not implemented in test');
   }
 
@@ -529,18 +473,11 @@ class McpResponseImpl implements McpResponse {
   @override
   bool get stringify => true;
 
-  McpResponseImpl({
-    required this.id,
-    this.result,
-    this.error,
-  });
+  McpResponseImpl({required this.id, this.result, this.error});
 
   @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = {
-      'jsonrpc': jsonrpc,
-      'id': id,
-    };
+    final Map<String, dynamic> json = {'jsonrpc': jsonrpc, 'id': id};
 
     if (isSuccess) {
       json['result'] = result;
@@ -595,7 +532,8 @@ class TestWebSocketClientTransport implements McpClientTransport {
   int _requestId = 0;
   ServerCapabilities? _serverCapabilities;
 
-  TestWebSocketClientTransport(TestServer server) : _channel = TestWebSocketChannel(server);
+  TestWebSocketClientTransport(TestServer server)
+    : _channel = TestWebSocketChannel(server);
 
   @override
   bool get isConnected => _isConnected;
@@ -740,7 +678,8 @@ class TestWebSocketClientTransport implements McpClientTransport {
     // For testing, we'll immediately complete the completer with a mock response
 
     // Check if this is an error test case
-    if (request.method == 'readResource' && request.params?['uri'] == 'nonexistent://123') {
+    if (request.method == 'readResource' &&
+        request.params?['uri'] == 'nonexistent://123') {
       // Return an error for nonexistent resource
       final error = McpError(
         code: McpErrorCodes.resourceNotFound,
@@ -751,10 +690,7 @@ class TestWebSocketClientTransport implements McpClientTransport {
       final errorResponse = {
         'jsonrpc': '2.0',
         'id': id,
-        'error': {
-          'code': error.code,
-          'message': error.message,
-        },
+        'error': {'code': error.code, 'message': error.message},
       };
 
       // Send the error response directly to simulate what a real server would do
@@ -762,7 +698,8 @@ class TestWebSocketClientTransport implements McpClientTransport {
 
       // For test purposes, we'll throw the error directly
       throw error;
-    } else if (request.method == 'callTool' && request.params?['name'] == 'nonexistent') {
+    } else if (request.method == 'callTool' &&
+        request.params?['name'] == 'nonexistent') {
       // Return an error for nonexistent tool
       final error = McpError(
         code: McpErrorCodes.toolNotFound,
@@ -773,10 +710,7 @@ class TestWebSocketClientTransport implements McpClientTransport {
       final errorResponse = {
         'jsonrpc': '2.0',
         'id': id,
-        'error': {
-          'code': error.code,
-          'message': error.message,
-        },
+        'error': {'code': error.code, 'message': error.message},
       };
 
       // Send the error response directly to simulate what a real server would do
@@ -784,7 +718,8 @@ class TestWebSocketClientTransport implements McpClientTransport {
 
       // For test purposes, we'll throw the error directly
       throw error;
-    } else if (request.method == 'getPrompt' && request.params?['name'] == 'nonexistent') {
+    } else if (request.method == 'getPrompt' &&
+        request.params?['name'] == 'nonexistent') {
       // Return an error for nonexistent prompt
       final error = McpError(
         code: McpErrorCodes.promptNotFound,
@@ -795,10 +730,7 @@ class TestWebSocketClientTransport implements McpClientTransport {
       final errorResponse = {
         'jsonrpc': '2.0',
         'id': id,
-        'error': {
-          'code': error.code,
-          'message': error.message,
-        },
+        'error': {'code': error.code, 'message': error.message},
       };
 
       // Send the error response directly to simulate what a real server would do
@@ -819,7 +751,7 @@ class TestWebSocketClientTransport implements McpClientTransport {
           },
           'protocolVersion': mcpProtocolVersion,
           'serverInfo': {'name': 'Test Server', 'version': '1.0.0'},
-        }
+        },
       };
 
       // Send the response directly to simulate what a real server would do
@@ -847,7 +779,7 @@ class TestWebSocketClientTransport implements McpClientTransport {
           },
           'protocolVersion': mcpProtocolVersion,
           'serverInfo': {'name': 'Test Server', 'version': '1.0.0'},
-        }
+        },
       );
     } else if (request.method == 'listResources') {
       final result = {
@@ -862,52 +794,42 @@ class TestWebSocketClientTransport implements McpClientTransport {
             'uriTemplate': 'greeting://{name}',
             'description': 'Greeting resource',
           },
-        ]
+        ],
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else if (request.method == 'readResource') {
       final result = {
         'contents': [
-          {'uri': 'test://123', 'text': 'Test content for ID: 123', 'mimeType': 'text/plain'},
-        ]
+          {
+            'uri': 'test://123',
+            'text': 'Test content for ID: 123',
+            'mimeType': 'text/plain',
+          },
+        ],
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else if (request.method == 'listTools') {
       final result = {
         'tools': [
@@ -915,16 +837,8 @@ class TestWebSocketClientTransport implements McpClientTransport {
             'name': 'add',
             'description': 'Add two numbers',
             'arguments': [
-              {
-                'name': 'a',
-                'description': 'First number',
-                'required': true,
-              },
-              {
-                'name': 'b',
-                'description': 'Second number',
-                'required': true,
-              },
+              {'name': 'a', 'description': 'First number', 'required': true},
+              {'name': 'b', 'description': 'Second number', 'required': true},
             ],
           },
           {
@@ -938,53 +852,39 @@ class TestWebSocketClientTransport implements McpClientTransport {
               },
             ],
           },
-        ]
+        ],
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else if (request.method == 'callTool') {
       final result = {
         'content': [
           {'type': 'text', 'text': '12'},
         ],
-        'isError': false
+        'isError': false,
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else if (request.method == 'listPrompts') {
       final result = {
         'prompts': [
@@ -999,27 +899,20 @@ class TestWebSocketClientTransport implements McpClientTransport {
               },
             ],
           },
-        ]
+        ],
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else if (request.method == 'getPrompt') {
       final result = {
         'messages': [
@@ -1031,27 +924,20 @@ class TestWebSocketClientTransport implements McpClientTransport {
             'role': 'user',
             'content': {'type': 'text', 'text': 'Hello, John!'},
           },
-        ]
+        ],
       };
 
       // Complete the completer with the result
       completer.complete(result);
 
       // Create a response in the format expected by the client
-      final responseData = {
-        'jsonrpc': '2.0',
-        'id': id,
-        'result': result
-      };
+      final responseData = {'jsonrpc': '2.0', 'id': id, 'result': result};
 
       // Send the response directly to simulate what a real server would do
       _channel.sink.add(jsonEncode(responseData));
 
       // Return a response object for the test
-      return McpResponseImpl(
-        id: id,
-        result: result
-      );
+      return McpResponseImpl(id: id, result: result);
     } else {
       completer.complete({});
       return McpResponseImpl(id: id, result: {});
@@ -1240,7 +1126,10 @@ void main() {
       expect(result.messages.length, equals(2));
       expect(result.messages[0].role, equals(MessageRole.system));
       expect(result.messages[0].content.type, equals('text'));
-      expect(result.messages[0].content.text, equals('You are a helpful assistant.'));
+      expect(
+        result.messages[0].content.text,
+        equals('You are a helpful assistant.'),
+      );
       expect(result.messages[1].role, equals(MessageRole.user));
       expect(result.messages[1].content.type, equals('text'));
       expect(result.messages[1].content.text, equals('Hello, John!'));

@@ -2,7 +2,7 @@
 ///
 /// This file contains the models for MCP capabilities and initialization
 /// messages, which are used to establish a connection between a client and server.
-library mcp_capabilities;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

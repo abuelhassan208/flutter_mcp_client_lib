@@ -3,7 +3,7 @@
 /// This file defines a widget for displaying code-based MCP responses.
 /// It handles code formatting, syntax highlighting, and provides options
 /// for copying the code to the clipboard.
-library mcp_code_response_widget;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +63,7 @@ class McpCodeResponseWidget extends McpResponseWidget {
   }) {
     // Extract the code content from the response result
     final codeContent = response.result?[codeKey] as String? ?? '';
-    
+
     // Extract the language from the response result if a key is provided
     String? language;
     if (languageKey != null && response.result != null) {
@@ -108,7 +108,7 @@ class McpCodeResponseWidget extends McpResponseWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: theme.primaryColor.withOpacity(0.1),
+              color: theme.primaryColor.withAlpha(26), // 0.1 opacity
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
@@ -143,7 +143,7 @@ class McpCodeResponseWidget extends McpResponseWidget {
   Widget _buildCodeContent(BuildContext context) {
     // Split the code into lines for line numbering
     final lines = codeContent.split('\n');
-    
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -151,9 +151,10 @@ class McpCodeResponseWidget extends McpResponseWidget {
         color: theme.codeBackgroundColor,
         borderRadius: BorderRadius.circular(theme.borderRadius / 2),
       ),
-      child: showLineNumbers
-          ? _buildCodeWithLineNumbers(context, lines)
-          : _buildCodeWithoutLineNumbers(context),
+      child:
+          showLineNumbers
+              ? _buildCodeWithLineNumbers(context, lines)
+              : _buildCodeWithoutLineNumbers(context),
     );
   }
 
@@ -184,24 +185,25 @@ class McpCodeResponseWidget extends McpResponseWidget {
         Container(
           width: 1,
           height: lines.length * 20,
-          color: theme.borderColor.withOpacity(0.5),
+          color: theme.borderColor.withAlpha(128), // 0.5 opacity
           margin: const EdgeInsets.only(right: 8),
         ),
         // Code content
         Expanded(
-          child: enableSelection
-              ? SelectableText(
-                  codeContent,
-                  style: theme.codeTextStyle.copyWith(
-                    color: theme.codeTextColor,
+          child:
+              enableSelection
+                  ? SelectableText(
+                    codeContent,
+                    style: theme.codeTextStyle.copyWith(
+                      color: theme.codeTextColor,
+                    ),
+                  )
+                  : Text(
+                    codeContent,
+                    style: theme.codeTextStyle.copyWith(
+                      color: theme.codeTextColor,
+                    ),
                   ),
-                )
-              : Text(
-                  codeContent,
-                  style: theme.codeTextStyle.copyWith(
-                    color: theme.codeTextColor,
-                  ),
-                ),
         ),
       ],
     );
@@ -211,16 +213,12 @@ class McpCodeResponseWidget extends McpResponseWidget {
   Widget _buildCodeWithoutLineNumbers(BuildContext context) {
     return enableSelection
         ? SelectableText(
-            codeContent,
-            style: theme.codeTextStyle.copyWith(
-              color: theme.codeTextColor,
-            ),
-          )
+          codeContent,
+          style: theme.codeTextStyle.copyWith(color: theme.codeTextColor),
+        )
         : Text(
-            codeContent,
-            style: theme.codeTextStyle.copyWith(
-              color: theme.codeTextColor,
-            ),
-          );
+          codeContent,
+          style: theme.codeTextStyle.copyWith(color: theme.codeTextColor),
+        );
   }
 }

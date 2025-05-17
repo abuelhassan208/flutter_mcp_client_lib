@@ -2,7 +2,7 @@
 ///
 /// This file contains the models for MCP resources, which are used to provide
 /// contextual information to LLMs.
-library mcp_resources;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

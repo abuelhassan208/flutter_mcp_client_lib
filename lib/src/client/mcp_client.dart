@@ -2,7 +2,7 @@
 ///
 /// This file implements the MCP client, which can be used to connect to
 /// MCP servers and use their resources, tools, and prompts.
-library mcp_client;
+library;
 
 import 'dart:async';
 

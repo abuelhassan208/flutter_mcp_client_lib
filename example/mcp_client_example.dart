@@ -2,7 +2,7 @@
 ///
 /// This example shows how to connect to an MCP server and use its resources,
 /// tools, and prompts.
-library mcp_client_example;
+library;
 
 import 'dart:io';
 

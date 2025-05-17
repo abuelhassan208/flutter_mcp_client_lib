@@ -2,7 +2,7 @@
 ///
 /// This file contains the basic types and interfaces used in the MCP protocol.
 /// These types are based on the official MCP specification.
-library mcp_types;
+library;
 
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';

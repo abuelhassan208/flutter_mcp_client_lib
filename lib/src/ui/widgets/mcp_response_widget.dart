@@ -3,20 +3,20 @@
 /// This file defines the base widget for displaying MCP responses.
 /// It provides a common structure for all response types and handles
 /// error cases and response validation.
-library mcp_response_widget;
+library;
 
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 import '../../models/models.dart';
 import '../themes/mcp_theme.dart';
 
 /// Callback for interaction events with MCP response widgets
-typedef McpInteractionCallback = void Function(
-  String responseId,
-  String interactionType,
-  Map<String, dynamic> data,
-);
+typedef McpInteractionCallback =
+    void Function(
+      String responseId,
+      String interactionType,
+      Map<String, dynamic> data,
+    );
 
 /// Base widget for displaying MCP responses
 ///
@@ -92,15 +92,9 @@ abstract class McpResponseWidget extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        Text(
-          getResponseType(),
-          style: theme.headerTextStyle,
-        ),
+        Text(getResponseType(), style: theme.headerTextStyle),
         const Spacer(),
-        Text(
-          'ID: ${response.id}',
-          style: theme.captionTextStyle,
-        ),
+        Text('ID: ${response.id}', style: theme.captionTextStyle),
       ],
     );
   }
@@ -129,28 +123,16 @@ abstract class McpResponseWidget extends StatelessWidget {
                 style: theme.headerTextStyle.copyWith(color: theme.errorColor),
               ),
               const Spacer(),
-              Text(
-                'ID: ${response.id}',
-                style: theme.captionTextStyle,
-              ),
+              Text('ID: ${response.id}', style: theme.captionTextStyle),
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            error.message,
-            style: theme.bodyTextStyle,
-          ),
+          Text(error.message, style: theme.bodyTextStyle),
           if (error.data != null) ...[
             const SizedBox(height: 8),
-            Text(
-              'Additional data:',
-              style: theme.captionTextStyle,
-            ),
+            Text('Additional data:', style: theme.captionTextStyle),
             const SizedBox(height: 4),
-            Text(
-              error.data.toString(),
-              style: theme.codeTextStyle,
-            ),
+            Text(error.data.toString(), style: theme.codeTextStyle),
           ],
         ],
       ),
@@ -173,21 +155,13 @@ abstract class McpResponseWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                'Loading',
-                style: theme.headerTextStyle,
-              ),
+              Text('Loading', style: theme.headerTextStyle),
               const Spacer(),
-              Text(
-                'ID: ${response.id}',
-                style: theme.captionTextStyle,
-              ),
+              Text('ID: ${response.id}', style: theme.captionTextStyle),
             ],
           ),
           const SizedBox(height: 16),
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
+          const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

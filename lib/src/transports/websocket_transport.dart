@@ -2,7 +2,7 @@
 ///
 /// This file implements a WebSocket transport for MCP, which can be used
 /// for both clients and servers.
-library websocket_transport;
+library;
 
 import 'dart:async';
 import 'dart:convert';

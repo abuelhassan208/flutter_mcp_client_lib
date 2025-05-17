@@ -2,7 +2,7 @@
 ///
 /// This file defines the interface for MCP transports, which are responsible
 /// for sending and receiving MCP messages.
-library transport;
+library;
 
 import 'dart:async';
 
