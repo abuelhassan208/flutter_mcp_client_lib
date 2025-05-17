@@ -1,6 +1,6 @@
 name: flutter_mcp_client_lib
 description: "A Flutter implementation of the Model Context Protocol (MCP) for integrating with AI tools like Windsurf, Cursor, and Claude."
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/abuelhassan208/flutter_mcp_client_lib
 repository: https://github.com/abuelhassan208/flutter_mcp_client_lib
 issue_tracker: https://github.com/abuelhassan208/flutter_mcp_client_lib/issues
