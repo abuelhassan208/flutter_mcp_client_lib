@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:stream_channel/stream_channel.dart';

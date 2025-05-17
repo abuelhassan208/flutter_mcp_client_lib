@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 import 'package:equatable/equatable.dart';
 
 // Re-export the MockMcpResponse class for use in test helpers
-export 'package:flutter_mcp/flutter_mcp.dart' show mcpProtocolVersion;
+export 'package:flutter_mcp_client_lib/flutter_mcp.dart' show mcpProtocolVersion;
 
 class MockMcpClientTransport implements McpClientTransport {
   // Custom field to store the response to return from sendRequest

@@ -62,13 +62,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_mcp:
+  flutter_mcp_client_lib:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "1.0.0"
   http:
     dependency: transitive
     description:

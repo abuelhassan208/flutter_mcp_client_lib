@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 
 void main() {
   group('MCP Models', () {

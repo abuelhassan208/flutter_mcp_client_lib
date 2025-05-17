@@ -1,11 +1,11 @@
 # Changelog
 
-All notable changes to the Flutter MCP package will be documented in this file.
+All notable changes to the Flutter MCP Client Library package will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 1.0.1 (2023-05-17)
+## 1.0.0 (2023-05-17)
 
 ### Added
 - Enhanced ClientCapabilities class with resources, tools, and prompts fields
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Resolved UI widget test failures
 - Fixed error handling tests
 
-## 1.0.0 (2023-05-13)
+## Initial Development (2023-05-13)
 
 ### Added
 - Initial implementation of MCP client (#1)
@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error Handling**: Comprehensive error handling and recovery strategies
 - **Logging**: Detailed logging for debugging and monitoring
 
-## 0.9.0 (2023-05-01)
+## Pre-release Development (2023-05-01)
 
 ### Added
 - Beta release of MCP client implementation
@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - WebSocket connection handling edge cases
 - Error propagation in async contexts
 
-## 0.5.0 (2023-04-15)
+## Alpha Development (2023-04-15)
 
 ### Added
 - Alpha release of MCP client

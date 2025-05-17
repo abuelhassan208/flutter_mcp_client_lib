@@ -7,7 +7,7 @@ library mcp_client_example;
 import 'dart:io';
 
 // Using the package import
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 import 'package:logging/logging.dart';
 
 void main() async {

@@ -1,4 +1,4 @@
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp.dart';
 import '../mocks/mock_transport.dart';
 
 /// Create a test McpRequest for use in tests

@@ -1,6 +1,6 @@
-# Flutter MCP (Model Context Protocol)
+# Flutter MCP Client Library
 
-[![pub package](https://img.shields.io/pub/v/flutter_mcp.svg)](https://pub.dev/packages/flutter_mcp)
+[![pub package](https://img.shields.io/pub/v/flutter_mcp_client_lib.svg)](https://pub.dev/packages/flutter_mcp_client_lib)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 A Flutter implementation of the [Model Context Protocol (MCP)](https://github.com/anthropics/model-context-protocol-spec) for integrating with AI tools like Windsurf, Cursor, and Claude.
@@ -34,7 +34,7 @@ Add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_mcp: ^0.1.0
+  flutter_mcp_client_lib: ^1.0.0
 ```
 
 Then run:
@@ -48,7 +48,7 @@ flutter pub get
 ### Connecting to an MCP Server
 
 ```dart
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 
 Future<void> connectToServer() async {
   // Create a client
@@ -133,7 +133,7 @@ for (final message in result.messages) {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 
 class McpResponseView extends StatelessWidget {
   final McpResponse response;
@@ -185,7 +185,7 @@ flutter run -t mcp_ui_example.dart      # For UI example
 
 ## Documentation
 
-- [API Reference](https://pub.dev/documentation/flutter_mcp/latest/)
+- [API Reference](https://pub.dev/documentation/flutter_mcp_client_lib/latest/)
 
 For more information about the Model Context Protocol, see:
 
@@ -218,7 +218,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### MCP Client
 
 ```dart
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 import 'package:logging/logging.dart';
 
 void main() async {
@@ -334,7 +334,7 @@ void main() async {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_mcp/flutter_mcp.dart';
+import 'package:flutter_mcp_client_lib/flutter_mcp_client_lib.dart';
 import 'package:logging/logging.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 name: mcp_example
-description: Example for the flutter_mcp package
+description: Example for the flutter_mcp_client_lib package
 version: 0.1.0
 publish_to: none
 
@@ -7,7 +7,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  flutter_mcp:
+  flutter_mcp_client_lib:
     path: ../
   logging: ^1.2.0
   web_socket_channel: ^2.4.0
