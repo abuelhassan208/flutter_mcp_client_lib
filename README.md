@@ -5,6 +5,12 @@
 
 A Flutter implementation of the [Model Context Protocol (MCP)](https://github.com/anthropics/model-context-protocol-spec) for integrating with AI tools like Windsurf, Cursor, and Claude.
 
+## Latest Updates
+
+- Enhanced ClientCapabilities with resources, tools, and prompts fields
+- Improved error handling and timeout management
+- Added comprehensive documentation and examples
+
 ## Overview
 
 The Model Context Protocol (MCP) is an open protocol that enables seamless integration between LLM applications and external data sources and tools. This Flutter package implements the MCP specification, making it easy to:
