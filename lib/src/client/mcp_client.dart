@@ -210,23 +210,51 @@ class McpClient {
   /// Handle a request from the server
   @protected
   Future<void> _handleRequest(McpRequest request) async {
-    _logger.fine('Received request: ${request.method}');
+    try {
+      _logger.fine('Received request: ${request.method}');
 
-    // Currently, the only request a server can send is 'sample'
-    if (request.method == 'sample') {
-      await _handleSampleRequest(request);
-    } else {
-      _logger.warning('Received unknown request: ${request.method}');
+      // Currently, the only request a server can send is 'sample'
+      if (request.method == 'sample') {
+        await _handleSampleRequest(request);
+      } else {
+        _logger.warning('Received unknown request: ${request.method}');
 
-      // Send an error response
-      final response = McpResponseImpl(
-        id: request.id,
-        error: McpError(
-          code: JsonRpcErrorCodes.methodNotFound,
-          message: 'Method not found',
-        ),
-      );
-      await _transport!.sendResponse(response);
+        // Send an error response
+        final response = McpResponseImpl(
+          id: request.id,
+          error: McpError(
+            code: JsonRpcErrorCodes.methodNotFound,
+            message: 'Method not found',
+          ),
+        );
+        await _transport!.sendResponse(response);
+      }
+    } catch (e, s) {
+      _logger.severe('Error handling request: $e, StackTrace: $s');
+      // Check if a response can be sent
+      if (request.id != null) {
+        try {
+          final response = McpResponseImpl(
+            id: request.id,
+            error: McpError(
+              code: JsonRpcErrorCodes.internalError,
+              message: 'Internal server error while handling request: $e',
+            ),
+          );
+          // Ensure transport is not null before sending
+          if (_transport != null && _transport!.isConnected) {
+            await _transport!.sendResponse(response);
+          } else {
+            _logger.warning(
+              'Transport not available to send error response for request id: ${request.id}',
+            );
+          }
+        } catch (sendError, sendStack) {
+          _logger.severe(
+            'Failed to send error response: $sendError, StackTrace: $sendStack',
+          );
+        }
+      }
     }
   }
 
@@ -270,24 +298,28 @@ class McpClient {
   /// Handle a notification from the server
   @protected
   void _handleNotification(McpNotification notification) {
-    _logger.fine('Received notification: ${notification.method}');
+    try {
+      _logger.fine('Received notification: ${notification.method}');
 
-    // Handle different notification types
-    switch (notification.method) {
-      case 'resourceListChanged':
-        _logger.info('Resource list changed');
-        break;
-      case 'toolListChanged':
-        _logger.info('Tool list changed');
-        break;
-      case 'promptListChanged':
-        _logger.info('Prompt list changed');
-        break;
-      default:
-        _logger.warning(
-          'Received unknown notification: ${notification.method}',
-        );
-        break;
+      // Handle different notification types
+      switch (notification.method) {
+        case 'resourceListChanged':
+          _logger.info('Resource list changed');
+          break;
+        case 'toolListChanged':
+          _logger.info('Tool list changed');
+          break;
+        case 'promptListChanged':
+          _logger.info('Prompt list changed');
+          break;
+        default:
+          _logger.warning(
+            'Received unknown notification: ${notification.method}',
+          );
+          break;
+      }
+    } catch (e, s) {
+      _logger.severe('Error handling notification: $e, StackTrace: $s');
     }
   }
 
