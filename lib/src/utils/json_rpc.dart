@@ -5,6 +5,7 @@ library;
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 /// A JSON-RPC message
 @immutable
@@ -73,5 +74,5 @@ class JsonRpcMessage extends Equatable {
 /// Generate a random request ID
 String generateRequestId() {
   // Use a timestamp-based ID for simplicity
-  return DateTime.now().millisecondsSinceEpoch.toString();
+  return Uuid().v4();
 }
